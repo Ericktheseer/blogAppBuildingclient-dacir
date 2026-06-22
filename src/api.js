@@ -1,8 +1,22 @@
-import axios from "axios";
+import axios from 'axios';
 
-export default axios.create({
-    baseURL: "http://localhost:4000",
-    headers: {
-        "Content-Type": "application/json"
+const api = axios.create({
+    baseURL: import.meta.env.VITE_JOB_TRACKER_API
+})
+
+api.interceptors.request.use((config) => {
+
+    
+    const token = localStorage.getItem("token");
+
+    // Check if the token exists
+    if (token) {
+        config.headers.Authorization = `Bearer ${token}`
     }
-});
+
+    return config;
+
+})
+
+export default api;
+
